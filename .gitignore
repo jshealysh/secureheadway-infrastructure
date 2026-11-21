@@ -1,0 +1,58 @@
+﻿# Secure Headway PKI — sensitive files
+
+# Private keys and key containers
+*.key
+*.pem.key
+*.p12
+*.pfx
+*.p8
+*.jks
+*.keystore
+
+# Secrets and environment files
+.env
+.env.*
+*.secret
+*.secrets
+*passphrase*
+*password*
+
+# CA database and operational state
+index.txt
+index.txt.*
+serial
+serial.old
+crlnumber
+crlnumber.old
+*.rand
+
+# Recovery and temporary artifacts
+*.tmp
+*.bak
+*.backup
+*.swp
+
+# Editor and operating system files
+.vs/
+.vscode/
+Thumbs.db
+.DS_Store
+/pki-tests-local/
+
+# Ansible secrets and temporary files
+*.vault.yml
+*.vault.yaml
+*.retry
+
+# Kubernetes local credentials
+**/kubeconfig
+**/kubeconfig-*
+**/*.kubeconfig
+
+# Terraform state (future infrastructure automation)
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# auto install artifacts
+autoinstall/generated/

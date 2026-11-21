@@ -1,0 +1,32 @@
+# Secure Headway Infrastructure
+# Normalize text files to LF
+
+* text=auto
+
+# Linux scripts
+*.sh text eol=lf
+
+# Configuration files
+*.cnf text eol=lf
+*.conf text eol=lf
+*.service text eol=lf
+
+# Documentation
+*.md text eol=lf
+
+# Git configuration
+.gitattributes text eol=lf
+.gitignore text eol=lf
+
+# Windows scripts
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.zip binary
+*.pfx binary
+*.p12 binary
