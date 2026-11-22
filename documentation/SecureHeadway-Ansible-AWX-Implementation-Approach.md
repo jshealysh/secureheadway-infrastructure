@@ -73,39 +73,55 @@ Each iteration must prove functional correctness, reproducibility, documentation
 
 The earlier staging VM environment includes OPNsense and separate APP/DB/MGMT networks. Its inclusion in the **first** automation scope must be explicitly decided at kickoff; it is not silently assumed to be part of the disposable Kubernetes cluster. The earlier OPNsense staging VM environment is a separate workstream. **The existing manually built Kubernetes reference cluster and the new disposable Ansible-built Kubernetes target cluster WILL operate concurrently during comparison and rebuild testing.** This supersedes any general non-concurrency assumption for these two Kubernetes clusters.
 
-### 2.2 Target topology
+### 2.2 Parallel reference and Ansible-target topology
 
 ```mermaid
 flowchart TB
-    GH["Public GitHub repository<br/>Playbooks / Docs / Approved reports"]
-    WS["Windows 11 workstation<br/>172.16.0.14<br/>Controlled Git sync"]
+    GH["Public GitHub repository<br/>Automation / Docs / Sanitized evidence"]
+    WS["Windows workstation<br/>172.16.0.14<br/>Controlled Git synchronization"]
     HV["Hyper-V host<br/>172.16.0.11"]
-    AWX["Persistent local AWX<br/>Management environment<br/>Outside disposable cluster"]
-    PKI["Dedicated PKI / DNS VM<br/>ubuntu-pki-01 · 172.16.0.16"]
-    DB["External TimescaleDB VM<br/>172.16.0.12"]
-    subgraph LAB["Disposable Kubernetes development/test environment"]
-      CP["k8s-control-01<br/>172.16.0.40"]
-      W1["k8s-worker-01<br/>172.16.0.41"]
-      W2["k8s-worker-02<br/>172.16.0.42"]
-      GW["MetalLB + Envoy Gateway<br/>VIP 172.16.0.200"]
-      NS["secureheadway-production<br/>Simulation namespace"]
-      CP --- W1
-      CP --- W2
-      GW --> NS
+    AWX["Persistent AWX controller<br/>ubuntu-awx-01 · 172.16.0.17<br/>Dedicated K3s; outside both clusters"]
+    PKI["Shared PKI / DNS reference<br/>ubuntu-pki-01 · 172.16.0.16"]
+    DB["External reference TimescaleDB<br/>172.16.0.12"]
+
+    subgraph REF["EXISTING MANUALLY BUILT KUBERNETES REFERENCE — PRESERVE / DO NOT DESTROY"]
+      RCP["k8s-control-01<br/>172.16.0.40"]
+      RW1["k8s-worker-01<br/>172.16.0.41"]
+      RW2["k8s-worker-02<br/>172.16.0.42"]
+      RGW["MetalLB + Envoy Gateway<br/>Reference VIP 172.16.0.200"]
+      RNS["secureheadway-production<br/>Reference simulation namespace"]
+      RCP --- RW1
+      RCP --- RW2
+      RGW --> RNS
     end
-    GH <-->|"Approved Git synchronization"| WS
-    WS <-->|"Controlled local transfer"| AWX
-    AWX -->|"Ansible / management access"| HV
-    AWX -->|"Ansible / SSH"| CP
-    AWX -->|"Ansible / SSH"| W1
-    AWX -->|"Ansible / SSH"| W2
-    AWX -->|"Ansible / SSH"| PKI
-    CP -->|"DNS / ACME trust"| PKI
-    NS -->|"Application database access"| DB
-    HV -.->|"VM lifecycle"| LAB
+
+    subgraph TARGET["NEW DISPOSABLE ANSIBLE KUBERNETES TARGET — REBUILD ONLY THIS CLUSTER"]
+      TCP["ansible-k8s-control-01<br/>172.16.0.50"]
+      TW1["ansible-k8s-worker-01<br/>172.16.0.51"]
+      TW2["ansible-k8s-worker-02<br/>172.16.0.52"]
+      TGW["MetalLB + Envoy Gateway<br/>Distinct target VIP — TBD"]
+      TNS["secureheadway-production<br/>Target simulation namespace"]
+      TCP --- TW1
+      TCP --- TW2
+      TGW --> TNS
+    end
+
+    GH <-->|"Approved synchronization"| WS
+    WS <-->|"Controlled transfer"| AWX
+    AWX -->|"Orchestrate approved VM lifecycle"| HV
+    AWX -->|"Read-only baseline comparison"| RCP
+    AWX -->|"Ansible provisioning and verification"| TCP
+    AWX -->|"Ansible provisioning and verification"| TW1
+    AWX -->|"Ansible provisioning and verification"| TW2
+    RCP -.->|"Reference DNS and PKI integration"| PKI
+    RNS -.->|"Existing application DB access"| DB
+    HV -.->|"Protect reference VMs"| REF
+    HV -->|"Create / destroy target VMs only"| TARGET
 ```
 
-**Connectivity assumptions:** This diagram is logical, not a firewall or routing specification. Verify actual reachability and authentication paths before enabling each arrow. GitHub access is available from the workstation; it is **not** assumed available from AWX or the isolated Kubernetes VMs. Public GitHub does not grant ChatGPT direct access to local AWX or infrastructure.
+**Topology rule:** Both Kubernetes clusters operate concurrently for comparison during Ansible implementation. Only the new target cluster is disposable; the manually built reference cluster must never be destroyed by the rebuild workflow. All three target VM IP/MAC reservations are confirmed. The target MetalLB VIP is **not yet allocated**. Target connections to shared PKI/DB are subject to explicit non-destructive test design and verification, not implied by the diagram.
+
+**Connectivity assumptions:** This is a logical topology, not a verified firewall/routing specification. GitHub synchronization uses an approved controlled path; do not assume direct GitHub access from AWX or managed VMs.
 
 ### 2.3 Controller bootstrap and management boundary
 
