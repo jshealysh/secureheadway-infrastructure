@@ -119,3 +119,7 @@ A failed verification prevents acceptance of the milestone.
 ### DHCP VIP exclusion confirmation — 2026-11-22
 
 User confirmed Netgear RAX50v2 DHCP server at `172.16.0.1` was changed and saved with DHCP ending address `172.16.0.199`. Accordingly, reference MetalLB VIP `172.16.0.200` and Ansible target VIP `172.16.0.201` are outside the DHCP allocation range. **Router setting: user-confirmed PASS.** Starting address not captured; independent address-conflict and reference MetalLB health verification remain pending. MetalLB Layer 2 VIPs do not require separate MAC-based DHCP reservations.
+
+### CI/CD and Grafana mandatory target scope — 2026-11-22
+
+**USER-APPROVED REQUIREMENT / NOT DEPLOYED:** The disposable Ansible Kubernetes target must include application CI/CD (GitHub Actions build/test/publish and controlled deployment of ASP.NET Core Web API and Next.js) and Grafana observability (Grafana, Loki, Alloy, datasource/dashboard provisioning, log-ingestion tests; metrics backend and alerting to be finalized). Roadmap Steps 12 and 13 are mandatory cumulative rebuild and PASS/FAIL acceptance gates. Verify deployment provenance, target-only credentials, application health, rollout/rollback, Grafana queries, persistence, and documentation. The existing reference cluster must remain untouched. See [Implementation Approach](./SecureHeadway-Ansible-AWX-Implementation-Approach.md#cicd-and-grafana-target-scope-approval--2026-11-22). **AWX-002 still pending.**
