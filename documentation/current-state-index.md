@@ -111,3 +111,7 @@ A failed verification prevents acceptance of the milestone.
 ### Ansible target network reservation milestone — 2026-11-22
 
 **RESERVED (user-confirmed):** `ansible-k8s-control-01` = `172.16.0.50` / `00-15-5D-28-40-15`; `ansible-k8s-worker-01` = `172.16.0.51` / `00-15-5D-28-40-16`; `ansible-k8s-worker-02` = `172.16.0.52` / `00-15-5D-28-40-17`. Hyper-V dynamic MAC range checked and non-overlapping. This is a reservation milestone, **not** a deployed/verified Kubernetes target-cluster checkpoint.
+
+### MetalLB VIP allocation decision — 2026-11-22
+
+**User-selected:** reference Kubernetes MetalLB VIP `172.16.0.200`; disposable Ansible target MetalLB VIP `172.16.0.201`. In MetalLB Layer 2 mode, neither VIP has a fixed standalone MAC: the announcing node's NIC MAC answers ARP and may change on failover. Do not create dedicated static MAC reservations for VIPs. Exclude these IPs from DHCP allocations and verify actual MetalLB configuration, ARP behavior, and address availability when deployed. Target VIP selection is an architecture decision, not proof of live configuration.
