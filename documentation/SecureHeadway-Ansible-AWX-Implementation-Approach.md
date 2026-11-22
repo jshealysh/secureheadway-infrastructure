@@ -99,7 +99,7 @@ flowchart TB
       TCP["ansible-k8s-control-01<br/>172.16.0.50"]
       TW1["ansible-k8s-worker-01<br/>172.16.0.51"]
       TW2["ansible-k8s-worker-02<br/>172.16.0.52"]
-      TGW["MetalLB + Envoy Gateway<br/>Distinct target VIP — TBD"]
+      TGW["MetalLB + Envoy Gateway<br/>Target VIP 172.16.0.201"]
       TNS["secureheadway-production<br/>Target simulation namespace"]
       TCP --- TW1
       TCP --- TW2
@@ -119,7 +119,7 @@ flowchart TB
     HV -->|"Create / destroy target VMs only"| TARGET
 ```
 
-**Topology rule:** Both Kubernetes clusters operate concurrently for comparison during Ansible implementation. Only the new target cluster is disposable; the manually built reference cluster must never be destroyed by the rebuild workflow. All three target VM IP/MAC reservations are confirmed. The target MetalLB VIP is **not yet allocated**. Target connections to shared PKI/DB are subject to explicit non-destructive test design and verification, not implied by the diagram.
+**Topology rule:** Both Kubernetes clusters operate concurrently for comparison during Ansible implementation. Only the new target cluster is disposable; the manually built reference cluster must never be destroyed by the rebuild workflow. All three target VM IP/MAC reservations are confirmed. The target MetalLB VIP is **approved as `172.16.0.201`** (user-selected; DHCP exclusion and live configuration still require verification). Target connections to shared PKI/DB are subject to explicit non-destructive test design and verification, not implied by the diagram.
 
 **Connectivity assumptions:** This is a logical topology, not a verified firewall/routing specification. GitHub synchronization uses an approved controlled path; do not assume direct GitHub access from AWX or managed VMs.
 
@@ -661,7 +661,7 @@ The public `secureheadway-infrastructure` Git repository is the **version-contro
 
 - Separate VM names, IP/MAC identities, VM disks, Kubernetes API endpoints, kubeconfig contexts, and Ansible inventories for `reference` and `disposable-target`.
 - Namespace `secureheadway-production` may exist independently in both clusters. Verify context and target inventory explicitly before any destructive action; use an allowlist of disposable VM IDs and a hard denylist of reference VM IDs.
-- Allocate a **distinct** MetalLB external IP pool/VIP for the target cluster (reference VIP `172.16.0.200` must not be reused on the same LAN). Plan DNS records, certificate names/SANs, ingress endpoints, and any shared dependencies independently.
+- Allocate a **distinct** MetalLB external IP pool/VIP for the target cluster: **`172.16.0.201`** (user-selected), separate from reference VIP **`172.16.0.200`**. In MetalLB Layer 2 mode these VIPs are advertised using the current announcing node's MAC; do **not** assign dedicated static MACs to VIPs. Exclude both VIPs from DHCP allocations and verify no existing address conflicts. Plan DNS records, certificate names/SANs, ingress endpoints, and any shared dependencies independently.
 - Cluster pod/service CIDRs may be reused only if routing remains isolated and no overlapping networks are interconnected; prefer an explicit CIDR design after confirming Calico and service-network settings. Do not assume that using the same namespace makes the clusters equivalent.
 - Both clusters may need simultaneous Hyper-V RAM, CPU, storage, network, and shared service capacity. Validate concurrent capacity before beginning cumulative rebuilds; previous non-concurrency capacity assumptions do not apply to this comparison phase.
 - Use the manually built reference cluster as a read-only configuration/functional baseline; document deviations and compare verified results. Rebuild and destroy only the new Ansible target cluster.
