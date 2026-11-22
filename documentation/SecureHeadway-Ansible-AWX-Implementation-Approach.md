@@ -595,8 +595,8 @@ The automation initiative succeeds when a new operator, starting with documented
 | Kubernetes | Dedicated persistent single-node K3s, separate from disposable kubeadm cluster |
 | AWX | AWX Operator-managed deployment |
 | PostgreSQL | AWX-only database, Operator-managed inside K3s |
-| Proposed sizing | 4 vCPU, 12 GiB RAM; 80 GiB OS/K3s/AWX disk plus 40 GiB PostgreSQL disk |
-| Status | VM sizing and disk layout proposed; validate before provisioning |
+| Sizing | 4 vCPU and 12 GiB RAM proposed; **approved disks: 80 GB OS/K3s/AWX and 40 GB AWX-only PostgreSQL (120 GB total)** |
+| Status | **Two-disk allocation approved 2026-11-22**; CPU/RAM and implementation details to validate before provisioning |
 
 The separate PostgreSQL disk is **not automatically persistent across a K3s rebuild**. Define and test local-path/PVC placement, database backup, AWX secret-key preservation, and restore procedures. AWX bootstrap/recovery must work without AWX itself. No application market-data workloads will share AWX PostgreSQL.
 
@@ -617,4 +617,4 @@ The public `secureheadway-infrastructure` Git repository is the **version-contro
 
 **AWX-001 — Hyper-V VM network-adapter inventory: PASS (user-supplied output).** Inventory covered 11 VMs and 14 network adapters. Existing static MACs `00-15-5D-28-40-10` through `00-15-5D-28-40-13` were observed; proposed AWX MAC `00-15-5D-28-40-14` was absent from the provided inventory and subsequently confirmed reserved by the user. This is planning evidence only, not evidence that the AWX VM exists.
 
-**Next step:** AWX-002, validate final VM storage layout and create `ubuntu-awx-01`; capture actual Hyper-V configuration and verification before marking complete.
+**Next step:** AWX-002, implement the approved two-disk layout, verify dedicated PostgreSQL PVC placement on Disk 2, and create `ubuntu-awx-01`; capture actual Hyper-V configuration and verification before marking complete.
