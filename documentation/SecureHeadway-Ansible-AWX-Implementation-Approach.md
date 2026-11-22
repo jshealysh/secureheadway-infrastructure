@@ -573,3 +573,48 @@ The automation initiative succeeds when a new operator, starting with documented
 7. Explain what is reusable in Kubernetes and what must change for AWS EKS or Google GKE.
 
 **Operating rule:** *Build cumulatively. Verify cumulatively. Document from evidence. Rebuild cleanly. Advance only on PASS.*
+
+---
+
+## AWX management platform decisions — 2026-11-22
+
+**Status: Architecture approved / implementation pending.** These decisions supersede earlier TBD fields for AWX hosting, but do not constitute deployment evidence.
+
+### Dedicated management VM
+
+| Property | Approved design |
+|---|---|
+| VM | `ubuntu-awx-01` |
+| Hyper-V host | `172.16.0.11` |
+| Hyper-V network | `Public Virtual Switch` (External), Main LAN `172.16.0.0/24` |
+| Static IP | `172.16.0.17/24` (user confirmed available/reserved) |
+| Static MAC | `00-15-5D-28-40-14` (user confirmed reserved) |
+| Gateway | `172.16.0.1` |
+| OPNsense | Not part of AWX hosting or its management network design |
+| OS | Ubuntu Server 24.04 LTS |
+| Kubernetes | Dedicated persistent single-node K3s, separate from disposable kubeadm cluster |
+| AWX | AWX Operator-managed deployment |
+| PostgreSQL | AWX-only database, Operator-managed inside K3s |
+| Proposed sizing | 4 vCPU, 12 GiB RAM; 80 GiB OS/K3s/AWX disk plus 40 GiB PostgreSQL disk |
+| Status | VM sizing and disk layout proposed; validate before provisioning |
+
+The separate PostgreSQL disk is **not automatically persistent across a K3s rebuild**. Define and test local-path/PVC placement, database backup, AWX secret-key preservation, and restore procedures. AWX bootstrap/recovery must work without AWX itself. No application market-data workloads will share AWX PostgreSQL.
+
+### GitHub documentation, verification evidence, and cost policy
+
+The public `secureheadway-infrastructure` Git repository is the **version-controlled permanent record** for approved automation, Markdown documentation, Mermaid diagrams, and compact sanitized PASS/FAIL verification evidence. Publish cumulative rebuild summaries and a traceable index update for every iteration, including failed/partial iterations.
+
+- Commit text-based Ansible YAML, documentation, compact JSON verification results, and sanitized summaries.
+- Retain detailed AWX job output locally in AWX for a bounded period; **30–90 days is a proposed starting range**, to be confirmed and implemented as a retention policy.
+- Do not commit raw verbose logs, VM/VHD images, PostgreSQL backups, binary archives, or large diagnostics to Git.
+- Avoid Git LFS and unnecessary GitHub Actions artifact/package storage; verify plan-specific billing and quotas before enabling metered services. Set cost alerts/budgets for metered services where available.
+- Never publish passwords, API tokens, SSH/private keys, AWX encryption secrets, sensitive certificate material, or unsanitized outputs. Apply automated secret scanning and publication approval before GitHub push.
+- Use a controlled publishing route from AWX/local evidence storage through the authorized GitHub sync mechanism; do not assume direct GitHub connectivity from every managed host.
+- Record report checksums, source Git revision, job identifiers, verification status, and observed-versus-desired state. Fail documentation/publication acceptance gates if required evidence is missing.
+- Repository growth must be monitored because Git history retains previous versions; do not assume text storage is literally unlimited or free for every GitHub feature.
+
+### Completed planning verification
+
+**AWX-001 — Hyper-V VM network-adapter inventory: PASS (user-supplied output).** Inventory covered 11 VMs and 14 network adapters. Existing static MACs `00-15-5D-28-40-10` through `00-15-5D-28-40-13` were observed; proposed AWX MAC `00-15-5D-28-40-14` was absent from the provided inventory and subsequently confirmed reserved by the user. This is planning evidence only, not evidence that the AWX VM exists.
+
+**Next step:** AWX-002, validate final VM storage layout and create `ubuntu-awx-01`; capture actual Hyper-V configuration and verification before marking complete.
