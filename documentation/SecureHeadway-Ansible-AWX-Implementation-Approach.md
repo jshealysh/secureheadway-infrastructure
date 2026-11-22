@@ -35,7 +35,7 @@ Each iteration must prove functional correctness, reproducibility, documentation
 1. **Automate the rebuild, not just the first installation.** Avoid dependencies on undocumented manual state.
 2. **Verify with Ansible.** Use native modules and assertions where possible; invoke specialized scripts from Ansible when necessary.
 3. **Use observed evidence.** Documentation must distinguish *desired*, *observed*, and *verified* values.
-4. **Preserve a working environment.** Initial destructive tests use disposable Hyper-V VMs and isolated test networks, never the current reference environment.
+4. **Preserve a working environment.** Destructive tests use only separately named disposable Hyper-V target VMs; the manually configured reference Kubernetes cluster remains available **in parallel** for inspection and comparison.
 5. **Keep the controller persistent.** AWX, its execution dependencies, and evidence storage must survive cluster deletion.
 6. **Stop on failures.** A failed prerequisite, deployment task, functional check, or documentation validation prevents progression.
 7. **Publish reviewed evidence.** GitHub stores automation, Markdown/Mermaid documentation, and sanitized verification results with traceable revisions.
@@ -69,9 +69,9 @@ Each iteration must prove functional correctness, reproducibility, documentation
 | Kubernetes workload namespace | `secureheadway-production` | **Production simulation only**, not live production |
 | Kubernetes service DNS | `10.96.0.10` (reference) | CoreDNS integration and functional DNS checks |
 | Envoy Gateway VIP | `172.16.0.200` (reference) | Local ingress/load-balancer and TLS validation |
-| AWX management environment | **New persistent management target; address TBD** | Job control, inventories, credentials, workflow history |
+| AWX management environment | `ubuntu-awx-01`, `172.16.0.17` (reserved) | Job control, inventories, credentials, workflow history |
 
-The earlier staging VM environment includes OPNsense and separate APP/DB/MGMT networks. Its inclusion in the **first** automation scope must be explicitly decided at kickoff; it is not silently assumed to be part of the disposable Kubernetes cluster. The development and earlier staging environments are not intended to operate concurrently.
+The earlier staging VM environment includes OPNsense and separate APP/DB/MGMT networks. Its inclusion in the **first** automation scope must be explicitly decided at kickoff; it is not silently assumed to be part of the disposable Kubernetes cluster. The earlier OPNsense staging VM environment is a separate workstream. **The existing manually built Kubernetes reference cluster and the new disposable Ansible-built Kubernetes target cluster WILL operate concurrently during comparison and rebuild testing.** This supersedes any general non-concurrency assumption for these two Kubernetes clusters.
 
 ### 2.2 Target topology
 
@@ -618,3 +618,30 @@ The public `secureheadway-infrastructure` Git repository is the **version-contro
 **AWX-001 — Hyper-V VM network-adapter inventory: PASS (user-supplied output).** Inventory covered 11 VMs and 14 network adapters. Existing static MACs `00-15-5D-28-40-10` through `00-15-5D-28-40-13` were observed; proposed AWX MAC `00-15-5D-28-40-14` was absent from the provided inventory and subsequently confirmed reserved by the user. This is planning evidence only, not evidence that the AWX VM exists.
 
 **Next step:** AWX-002, implement the approved two-disk layout, verify dedicated PostgreSQL PVC placement on Disk 2, and create `ubuntu-awx-01`; capture actual Hyper-V configuration and verification before marking complete.
+
+---
+
+## Parallel Kubernetes reference and Ansible-target architecture — 2026-11-22
+
+**Approved requirement:** Keep the manually built Kubernetes cluster (`k8s-control-01`, `k8s-worker-01`, `k8s-worker-02` at `172.16.0.40–42`) operational and unchanged as a **reference** while a second, independently identified Kubernetes cluster is provisioned and repeatedly rebuilt by Ansible. Both are development/test-only; the `secureheadway-production` namespace is a production **simulation** in each cluster, not real production. The reference cluster is **never** a deletion target. The persistent AWX controller `ubuntu-awx-01` (`172.16.0.17`) remains outside both clusters.
+
+### Proposed target addressing — NOT RESERVED
+
+| Role | Reference VM / IP | Proposed new target VM / IP |
+|---|---|---|
+| Control plane | `k8s-control-01` / `172.16.0.40` | `ansible-k8s-control-01` / `172.16.0.50` |
+| Worker 1 | `k8s-worker-01` / `172.16.0.41` | `ansible-k8s-worker-01` / `172.16.0.51` |
+| Worker 2 | `k8s-worker-02` / `172.16.0.42` | `ansible-k8s-worker-02` / `172.16.0.52` |
+
+These are **candidate** addresses only. Confirm free IPs, DHCP exclusions/reservations, unique static MACs outside the Hyper-V dynamic MAC pool, hostnames, separate VHDX files, and routing before provisioning. No MAC addresses for the target cluster have been approved yet.
+
+### Isolation and acceptance requirements
+
+- Separate VM names, IP/MAC identities, VM disks, Kubernetes API endpoints, kubeconfig contexts, and Ansible inventories for `reference` and `disposable-target`.
+- Namespace `secureheadway-production` may exist independently in both clusters. Verify context and target inventory explicitly before any destructive action; use an allowlist of disposable VM IDs and a hard denylist of reference VM IDs.
+- Allocate a **distinct** MetalLB external IP pool/VIP for the target cluster (reference VIP `172.16.0.200` must not be reused on the same LAN). Plan DNS records, certificate names/SANs, ingress endpoints, and any shared dependencies independently.
+- Cluster pod/service CIDRs may be reused only if routing remains isolated and no overlapping networks are interconnected; prefer an explicit CIDR design after confirming Calico and service-network settings. Do not assume that using the same namespace makes the clusters equivalent.
+- Both clusters may need simultaneous Hyper-V RAM, CPU, storage, network, and shared service capacity. Validate concurrent capacity before beginning cumulative rebuilds; previous non-concurrency capacity assumptions do not apply to this comparison phase.
+- Use the manually built reference cluster as a read-only configuration/functional baseline; document deviations and compare verified results. Rebuild and destroy only the new Ansible target cluster.
+- Preserve PostgreSQL/PKI and other shared services unless separate disposable test equivalents are explicitly designed; avoid destructive tests against shared databases or CA state.
+- No IP/MAC reservation or actual target deployment is claimed by this planning update.
