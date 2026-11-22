@@ -22,13 +22,13 @@ ChatGPT will provide both the timestamped checkpoint document and its correspond
 | Field                           | Value                         |
 | ------------------------------- | ----------------------------- |
 | Project                         | Secure Headway Infrastructure |
-| Current workstream              | To be updated                 |
-| Last completed step             | To be updated                 |
+| Current workstream              | AWX management architecture planning |
+| Last completed step             | AWX-001 Hyper-V MAC inventory (PASS) |
 | Last verified checkpoint        | To be updated                 |
-| Next planned step               | To be updated                 |
-| Outstanding issues              | To be updated                 |
-| Implementation approach version | To be updated                 |
-| Last updated                    | YYYY-MM-DD HHMM               |
+| Next planned step               | AWX-002 VM provisioning (not started) |
+| Outstanding issues              | Confirm disk layout, storage persistence, backup/restore and bootstrap |
+| Implementation approach version | AWX decisions dated 2026-11-22 |
+| Last updated                    | 2026-11-22 (planning update) |
 
 ## Checkpoint Naming Convention
 
@@ -85,3 +85,13 @@ A failed verification prevents acceptance of the milestone.
 - Maintain chronological checkpoint history.
 - Update the current execution state after each milestone.
 - Record the Git commit associated with verified rebuilds when available.
+
+## AWX planning decision record — 2026-11-22
+
+**Status: PLANNING / NOT DEPLOYED.** The approved AWX design and GitHub evidence/cost policy are documented in [the Implementation Approach](./SecureHeadway-Ansible-AWX-Implementation-Approach.md#awx-management-platform-decisions--2026-11-22).
+
+- Dedicated persistent `ubuntu-awx-01` on Main LAN `172.16.0.17/24`, static MAC `00-15-5D-28-40-14` (reserved), External Hyper-V switch; no OPNsense involvement in AWX hosting.
+- Single-node K3s, AWX Operator, AWX-only PostgreSQL in K3s; proposed 4 vCPU, 12 GiB RAM, 80 GiB OS + 40 GiB DB disks, pending validation.
+- Public GitHub repository stores sanitized text-based automation, Markdown/Mermaid documentation, compact PASS/FAIL evidence and cumulative rebuild reports. Detailed logs remain local with bounded retention; avoid large binary artifacts, LFS and metered GitHub storage unless separately approved.
+- **AWX-001 PASS:** User-provided read-only Hyper-V inventory showed 11 VMs and 14 NICs. AWX-002 is pending. No AWX installation has been verified.
+- This is an architecture decision update, not a VERIFIED infrastructure checkpoint; do not create a fictional timestamped execution checkpoint.
