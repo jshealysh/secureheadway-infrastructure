@@ -667,3 +667,7 @@ The public `secureheadway-infrastructure` Git repository is the **version-contro
 - Use the manually built reference cluster as a read-only configuration/functional baseline; document deviations and compare verified results. Rebuild and destroy only the new Ansible target cluster.
 - Preserve PostgreSQL/PKI and other shared services unless separate disposable test equivalents are explicitly designed; avoid destructive tests against shared databases or CA state.
 - IP/MAC reservations are user-confirmed; actual target VM deployment is **not** claimed by this planning update.
+
+### DHCP VIP exclusion confirmation — 2026-11-22
+
+User confirmed Netgear RAX50v2 DHCP server at `172.16.0.1` was changed and saved with DHCP ending address `172.16.0.199`. Accordingly, reference MetalLB VIP `172.16.0.200` and Ansible target VIP `172.16.0.201` are outside the DHCP allocation range. **Router setting: user-confirmed PASS.** Starting address not captured; independent address-conflict and reference MetalLB health verification remain pending. MetalLB Layer 2 VIPs do not require separate MAC-based DHCP reservations.
