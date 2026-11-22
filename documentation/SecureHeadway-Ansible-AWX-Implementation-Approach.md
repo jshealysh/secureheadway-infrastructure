@@ -625,7 +625,7 @@ The public `secureheadway-infrastructure` Git repository is the **version-contro
 
 **Approved requirement:** Keep the manually built Kubernetes cluster (`k8s-control-01`, `k8s-worker-01`, `k8s-worker-02` at `172.16.0.40–42`) operational and unchanged as a **reference** while a second, independently identified Kubernetes cluster is provisioned and repeatedly rebuilt by Ansible. Both are development/test-only; the `secureheadway-production` namespace is a production **simulation** in each cluster, not real production. The reference cluster is **never** a deletion target. The persistent AWX controller `ubuntu-awx-01` (`172.16.0.17`) remains outside both clusters.
 
-### Proposed target addressing — NOT RESERVED
+### Target addressing — USER-CONFIRMED RESERVED
 
 | Role | Reference VM / IP | Proposed new target VM / IP |
 |---|---|---|
@@ -633,7 +633,13 @@ The public `secureheadway-infrastructure` Git repository is the **version-contro
 | Worker 1 | `k8s-worker-01` / `172.16.0.41` | `ansible-k8s-worker-01` / `172.16.0.51` |
 | Worker 2 | `k8s-worker-02` / `172.16.0.42` | `ansible-k8s-worker-02` / `172.16.0.52` |
 
-These are **candidate** addresses only. Confirm free IPs, DHCP exclusions/reservations, unique static MACs outside the Hyper-V dynamic MAC pool, hostnames, separate VHDX files, and routing before provisioning. No MAC addresses for the target cluster have been approved yet.
+**Reservation confirmed by user, 2026-11-22.** The three target IP/MAC pairs below are reserved. The Hyper-V host's configured dynamic MAC pool was verified as `00-15-5D-00-0B-00` through `00-15-5D-00-0B-FF`, which does not overlap these static MACs. Physical VM deployment, assigned adapter identities, and connectivity remain unverified.
+
+| Target VM hostname | Reserved IP | Reserved static MAC |
+|---|---|---|
+| `ansible-k8s-control-01` | `172.16.0.50` | `00-15-5D-28-40-15` |
+| `ansible-k8s-worker-01` | `172.16.0.51` | `00-15-5D-28-40-16` |
+| `ansible-k8s-worker-02` | `172.16.0.52` | `00-15-5D-28-40-17` |
 
 ### Isolation and acceptance requirements
 
@@ -644,4 +650,4 @@ These are **candidate** addresses only. Confirm free IPs, DHCP exclusions/reserv
 - Both clusters may need simultaneous Hyper-V RAM, CPU, storage, network, and shared service capacity. Validate concurrent capacity before beginning cumulative rebuilds; previous non-concurrency capacity assumptions do not apply to this comparison phase.
 - Use the manually built reference cluster as a read-only configuration/functional baseline; document deviations and compare verified results. Rebuild and destroy only the new Ansible target cluster.
 - Preserve PostgreSQL/PKI and other shared services unless separate disposable test equivalents are explicitly designed; avoid destructive tests against shared databases or CA state.
-- No IP/MAC reservation or actual target deployment is claimed by this planning update.
+- IP/MAC reservations are user-confirmed; actual target VM deployment is **not** claimed by this planning update.
