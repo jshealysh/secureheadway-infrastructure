@@ -115,3 +115,7 @@ A failed verification prevents acceptance of the milestone.
 ### MetalLB VIP allocation decision — 2026-11-22
 
 **User-selected:** reference Kubernetes MetalLB VIP `172.16.0.200`; disposable Ansible target MetalLB VIP `172.16.0.201`. In MetalLB Layer 2 mode, neither VIP has a fixed standalone MAC: the announcing node's NIC MAC answers ARP and may change on failover. Do not create dedicated static MAC reservations for VIPs. Exclude these IPs from DHCP allocations and verify actual MetalLB configuration, ARP behavior, and address availability when deployed. Target VIP selection is an architecture decision, not proof of live configuration.
+
+### DHCP VIP exclusion confirmation — 2026-11-22
+
+User confirmed Netgear RAX50v2 DHCP server at `172.16.0.1` was changed and saved with DHCP ending address `172.16.0.199`. Accordingly, reference MetalLB VIP `172.16.0.200` and Ansible target VIP `172.16.0.201` are outside the DHCP allocation range. **Router setting: user-confirmed PASS.** Starting address not captured; independent address-conflict and reference MetalLB health verification remain pending. MetalLB Layer 2 VIPs do not require separate MAC-based DHCP reservations.
