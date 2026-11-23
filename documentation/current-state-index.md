@@ -253,3 +253,7 @@ User execution: HTTPS to get.k3s.io and GitHub k3s releases returned HTTP 200. S
 ### AWX-006B.1 — PASS: K3s stable release verification
 
 Verified on ubuntu-awx-01: channel https://update.k3s.io/v1-release/channels/stable returned HTTP 200, effective URL https://github.com/k3s-io/k3s/releases/tag/v1.37.2+k3s1. Extracted release tag v1.37.2+k3s1 passed strict validation. No K3s installation performed. Next: review pinned K3s single-node installation configuration before execution.
+
+### AWX-006C pinned K3s installation — PARTIAL PASS / node registration pending
+
+User-executed on ubuntu-awx-01: installer selected v1.37.2+k3s1, downloaded sha256sum and binary, reported binary checksum verification, installed /usr/local/bin/k3s and kubectl/crictl/ctr symlinks, created/enabled/started k3s systemd unit. `systemctl is-active k3s` returned active. `k3s --version` returned v1.37.2+k3s1 (f6973cb8), Go 1.26.10. However, `sudo k3s kubectl get nodes -o wide` returned `No resources found`. **Do not mark node readiness PASS or install AWX Operator yet.** Next AWX-006D: read-only diagnosis of node registration and K3s journal, service state, cluster objects, and configuration.
