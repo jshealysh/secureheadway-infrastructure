@@ -481,3 +481,7 @@ On ubuntu-awx-01, /dev/sdb1 ext4 mounted rw at /var/lib/awx-postgresql. Host dir
 ### AWX-009C — PASS: AWX PostgreSQL schema and persisted record verification
 
 On ubuntu-awx-01, PostgreSQL Pod awx-postgres-15-0 Ready; local psql connected to database awx as user awx, PostgreSQL server version 15.19. Public schema contains 170 base tables. All six checked core tables exist: auth_user, django_migrations, main_inventory, main_job, main_organization, main_project. Aggregate record counts: users=1, organizations=1, inventories=1, projects=1, jobs=0, migrations=294. Database size 22 MB. All seven scripted checks completed with no SQL errors. No secrets or individual user records exposed. PASS for database availability and expected schema/records after recent VM startup; controlled before/after reboot comparison and workload readiness following deliberate reboot remain to be tested.
+
+### AWX-009D — PARTIAL PASS: PostgreSQL fingerprint not captured; stdin forwarding correction required
+
+Target ubuntu-awx-01 verified. PostgreSQL PVC postgres-15-awx-postgres-15-0 remained Bound to awx-postgresql-pv 30Gi RWO; /dev/sdb1 ext4 mounted rw at /var/lib/awx-postgresql. Fingerprint section printed no results because kubectl exec invocation omitted -i while passing psql SQL via heredoc; without stdin forwarding, psql received no statements and returned successfully. No database baseline captured, no controlled restart authorized. Correct with kubectl exec -i and repeat AWX-009D; verify expected fields are present before any restart. No secrets captured.
