@@ -201,3 +201,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-004B Hyper-V disk chain and automatic checkpoint — 2026-11-22
 
 **USER-EXECUTED PASS (read-only diagnosis).** `ubuntu-awx-01` remains Off. OS disk at SCSI 0:0 is `E:\\VM Disks\\Ubuntu-AWX-01\\Ubuntu-AWX-01-OS_35416DE3-4E80-45C2-9455-C92389BF8424.avhdx`, type Differencing, virtual size 80GB, parent `E:\\VM Disks\\Ubuntu-AWX-01\\Ubuntu-AWX-01-OS.vhdx`. PostgreSQL disk SCSI 0:3 `...\\Ubuntu-AWX-01-PostgreSQL.vhdx` type Dynamic, 40GB, no parent. One `Standard` automatic checkpoint `Automatic Checkpoint - ubuntu-awx-01 - (11/22/2026 - 8:16:37 PM)`; `CheckpointType: Standard`, `AutomaticCheckpointsEnabled: True`. Recommend disable future automatic checkpoints for persistent AWX VM, **preserve existing checkpoint** pending separate explicit decision. Never manually delete .avhdx; no guest PostgreSQL formatting yet.
+
+### AWX-004C disable future automatic checkpoints — 2026-11-22
+
+**USER-EXECUTED PASS.** On Hyper-V host, `Set-VM -Name ubuntu-awx-01 -AutomaticCheckpointsEnabled $false` succeeded and was verified. Existing single Standard automatic checkpoint dated 2026-11-22 20:16:37 was preserved, VM remains Off. OS .avhdx differencing chain remains in place. 40GB PostgreSQL VHDX attached but not initialized. Next: start VM and run read-only guest storage discovery to distinguish existing OS `sda` from newly attached 40GB device; no formatting yet.
