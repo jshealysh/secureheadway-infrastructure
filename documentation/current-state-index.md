@@ -277,3 +277,7 @@ User verified on ubuntu-awx-01: /dev/sdb1 ext4 LABEL AWX-PostgreSQL, filesystem 
 ### AWX-006H — PASS: dedicated PostgreSQL storage safety
 
 User executed on ubuntu-awx-01: expected filesystem UUID 532571bf-d66d-4b59-8d99-2bdaca4e3253 exactly matched active findmnt UUID for /var/lib/awx-postgresql; mount /dev/sdb1 ext4 rw,relatime. OS /dev/sda2 ext4 mounted /; distinct source confirmed. OS 78G total 66G free; dedicated PostgreSQL 40G total 38G free. All verification PASS; no changes. Next: determine supported AWX Operator database storage class/PVC configuration and implement isolated PostgreSQL storage using dedicated filesystem, preserving K3s default local-path.
+
+### AWX-006I — PASS: static PostgreSQL PV prerequisites
+
+User verified on ubuntu-awx-01: node Ready control-plane v1.37.2+k3s1 at 172.16.0.17, spec.unschedulable empty (no unschedulable flag), dedicated PostgreSQL mount UUID 532571bf-d66d-4b59-8d99-2bdaca4e3253 matches, proposed StorageClass awx-postgresql absent, proposed PV awx-postgresql-pv absent, no PVCs, K3s default local-path unchanged. All checks PASS. Proposed architecture: static local PV with non-default StorageClass kubernetes.io/no-provisioner, WaitForFirstConsumer, Retain, node affinity ubuntu-awx-01; explicitly bind AWX PostgreSQL claim. Before creation, verify supported AWX Operator PostgreSQL PVC/storage class options and local mount-path safety. No changes yet.
