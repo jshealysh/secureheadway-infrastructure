@@ -561,3 +561,7 @@ User screenshot confirms Secure Headway Infrastructure Automation project Last J
 ### AWX-010O — PASS: First smoke test job template created
 
 Screenshot verifies Secure Headway - AWX Smoke Test, organization Secure Headway, inventory Secure Headway Infrastructure, project Secure Headway Infrastructure Automation, EE AWX EE (24.6.1), playbook ansible/playbooks/awx-smoke-test.yml, job type run, limit localhost, forks 0 (default), verbosity 0, timeout 120, job slicing 1, show changes off, empty variables, no credentials displayed. Created 2026-11-23 18:49:59 UI local time by admin. Runtime verification pending. Next launch isolated smoke test and inspect task output and recap; require actual localhost execution, zero failures and zero changes.
+
+### AWX-010P — PARTIAL PASS: First smoke test job launched; output verification pending
+
+User screenshot shows job ID 3, Secure Headway - AWX Smoke Test, status Successful, elapsed 00:00:02, UI Tasks counter 4, and 'No output found for this job.' Actual task results, Ansible/Python versions, PASS marker and recap are not visible. Do not accept runtime milestone until actual stdout confirms five successful localhost tasks and zero changes/failures/unreachable. Next retrieve job stdout through authenticated AWX API or download control; no relaunch or configuration changes yet.
