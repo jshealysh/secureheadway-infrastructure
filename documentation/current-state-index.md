@@ -205,3 +205,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-004C disable future automatic checkpoints — 2026-11-22
 
 **USER-EXECUTED PASS.** On Hyper-V host, `Set-VM -Name ubuntu-awx-01 -AutomaticCheckpointsEnabled $false` succeeded and was verified. Existing single Standard automatic checkpoint dated 2026-11-22 20:16:37 was preserved, VM remains Off. OS .avhdx differencing chain remains in place. 40GB PostgreSQL VHDX attached but not initialized. Next: start VM and run read-only guest storage discovery to distinguish existing OS `sda` from newly attached 40GB device; no formatting yet.
+
+### AWX-004D.2 guest PostgreSQL disk discovery — 2026-11-22
+
+**USER-EXECUTED PASS (read-only).** Guest hostname `ubuntu-awx-01`; `/dev/sda` 80 GiB OS disk with GPT, `/dev/sda1` EFI VFAT and `/dev/sda2` ext4 mounted at `/`. New `/dev/sdb` 40 GiB (42949672960 bytes), no partition table or partitions reported by `fdisk -l`, no filesystem signatures in `blkid`, no mounts. `df -hT` confirms OS root `/dev/sda2` 78G, 6.8G used, 67G available; `sr1` cidata ISO still present. Ready for separately gated, explicitly targeted data-disk partitioning/formatting, UUID-based mount; do not touch `/dev/sda`. AWX-004D.1 host start output not supplied, but guest running evidenced by successful SSH commands.
