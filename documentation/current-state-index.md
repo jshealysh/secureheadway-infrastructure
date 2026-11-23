@@ -289,3 +289,7 @@ User observed on ubuntu-awx-01: dedicated /var/lib/awx-postgresql mount UUID pre
 ### AWX-006K — PASS: PostgreSQL data directory prepared
 
 User executed on ubuntu-awx-01: hostname and dedicated ext4 mount UUID 532571bf-d66d-4b59-8d99-2bdaca4e3253 verified, confirmed /var/lib/awx-postgresql/data absent, created directory using install -d mode 0755 owner root:root, verified directory resides on dedicated /dev/sdb1 filesystem, verified empty. Disk 40G total / 38G available / 28K used. No PostgreSQL or Kubernetes PV/PVC installed. Next: verify AWX Operator PostgreSQL storageClassName/claim capabilities and compatibility before applying static local PV.
+
+### AWX-006L — PASS: GitHub published release discovery (compatibility NOT established)
+
+User ran on ubuntu-awx-01: GitHub API releases/latest HTTP 200; returned ansible/awx-operator tag 2.19.1, release URL https://github.com/ansible/awx-operator/releases/tag/2.19.1, published 2024-07-02T21:53:58Z, draft=false, prerelease=false. K3s node version v1.37.2+k3s1. Discovery PASS only. This does NOT confirm newest tag overall, AWX Operator compatibility with Kubernetes 1.37, or PostgreSQL storage configuration support. No installation/configuration changes. Next AWX-006M: read-only inspect repository tags and versioned AWX Operator PostgreSQL storage documentation before choosing version.
