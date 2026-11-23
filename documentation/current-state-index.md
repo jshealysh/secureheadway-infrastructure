@@ -437,3 +437,7 @@ Read-only checks on ubuntu-awx-01: ssh.service active/running but disabled; ssh.
 ### AWX-008I — PARTIAL PASS: Windows SSH tunnel blocked by public-key authentication
 
 Windows workstation 172.16.0.14: OpenSSH client located at C:\\WINDOWS\\System32\\OpenSSH\\ssh.exe; local TCP 18080 available. Attempted localhost-only SSH local forwarding 127.0.0.1:18080 to AWX service 10.43.152.163:80 via deploy@172.16.0.17. First-use ED25519 host-key prompt accepted and host recorded in known_hosts without out-of-band fingerprint verification; observed fingerprint SHA256:llc/QNclZ6QYc/uZ/OMFCNqRINhGNPiM4dBAEdWYfu4 (public host fingerprint, not a credential). SSH authentication failed: Permission denied (publickey). Tunnel not established. Next step: verify ED25519 host-key fingerprint via existing authenticated SSH session/Hyper-V console and identify correct Windows private key before retry. No SSH server or Kubernetes changes.
+
+### AWX-008I.1A — PASS: SSH host identity fingerprint matched
+
+User ran ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub -E sha256 on ubuntu-awx-01 and reported ED25519 SHA256:llc/QNclZ6QYc/uZ/OMFCNqRINhGNPiM4dBAEdWYfu4. This exactly matches the Windows first-connect SSH host-key prompt from AWX-008I.1. Host identity verified assuming the command ran in trusted existing session or Hyper-V console. No host key changes required. AWX-008I.1B Windows key/agent inventory remains pending; tunnel not yet established.
