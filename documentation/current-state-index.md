@@ -565,3 +565,7 @@ Screenshot verifies Secure Headway - AWX Smoke Test, organization Secure Headway
 ### AWX-010P — PARTIAL PASS: First smoke test job launched; output verification pending
 
 User screenshot shows job ID 3, Secure Headway - AWX Smoke Test, status Successful, elapsed 00:00:02, UI Tasks counter 4, and 'No output found for this job.' Actual task results, Ansible/Python versions, PASS marker and recap are not visible. Do not accept runtime milestone until actual stdout confirms five successful localhost tasks and zero changes/failures/unreachable. Next retrieve job stdout through authenticated AWX API or download control; no relaunch or configuration changes yet.
+
+### AWX-010P.1 — PASS: First end-to-end Secure Headway Ansible job verified
+
+2026-11-23: User retrieved downloaded stdout for job ID 3 (previous UI status Successful). Actual stdout confirms all five tasks executed on localhost, Ansible 2.15.12, Python 3.9.19, BEGIN and END PASS markers, recap ok=5 changed=0 unreachable=0 failed=0 skipped=0 rescued=0 ignored=0. Empty inventory warning expected for implicit localhost; no remote targets or configuration changes. UI previously showed no output and Tasks counter 4; downloaded stdout confirms execution and output retention, but UI display discrepancy root cause remains unverified. Initial AWX controller configuration and GitHub-to-Ansible smoke test milestone accepted. Next inspect job Details for actual SCM revision and execution environment evidence before closing the cumulative checkpoint.
