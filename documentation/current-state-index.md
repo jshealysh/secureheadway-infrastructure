@@ -297,3 +297,7 @@ User ran on ubuntu-awx-01: GitHub API releases/latest HTTP 200; returned ansible
 ### AWX-006M — PARTIAL PASS: tags and deployment inventory; storage documentation unresolved
 
 User on ubuntu-awx-01 retrieved first 30 ansible/awx-operator repository tags via GitHub API, headed by 2.19.1, 2.19.0, 2.18.0, through 2.1.0. Attempted raw URL for tag 2.19.1 docs/user-guide/advanced-configuration/persisting-data.md returned HTTP 404, so PostgreSQL storage fields and compatibility remain unverified. K3s deployments kube-system coredns, local-path-provisioner, metrics-server all 1/1, no AWX CRDs shown. No changes. Status PARTIAL PASS; next AWX-006N inspect repository tree and versioned CRD/roles directly before choosing PostgreSQL storage configuration.
+
+### AWX-006N — PASS: AWX Operator 2.19.1 repository tree located
+
+User executed on ubuntu-awx-01 read-only GitHub API tree for tag 2.19.1: 299 files, untruncated. Found docs/user-guide/database-configuration.md; config/crd/bases/awx.ansible.com_awxs.yaml; roles/installer/templates/statefulsets/postgres.yaml.j2; other PostgreSQL templates and installer tasks. Repository source paths verified, but exact storage fields and compatibility with K3s v1.37.2+k3s1 not yet established. No Kubernetes or filesystem changes. Next AWX-006O inspect versioned database docs, AWX CRD storage properties, and PostgreSQL StatefulSet template before storage provisioning.
