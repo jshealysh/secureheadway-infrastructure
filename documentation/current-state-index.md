@@ -217,3 +217,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-004E.2 ext4 formatting — 2026-11-22
 
 **USER-EXECUTED PASS.** `ubuntu-awx-01`: preformat guards verified empty `/dev/sdb1` on 40GiB `/dev/sdb`. `mkfs.ext4 -L AWX-PostgreSQL /dev/sdb1` completed, with UUID `532571bf-d66d-4b59-8d99-2bdaca4e3253`; postcheck `blkid` returned ext4 type and UUID. `lsblk -f` display omitted FSTYPE/UUID columns in supplied output despite `blkid` PASS; independently verify before mounting. Filesystem not yet mounted; next AWX-004E.3 guarded UUID-based `/var/lib/awx-postgresql` mount and `/etc/fstab` entry, with backup and validation.
+
+### AWX-004E.3 persistent PostgreSQL mount — 2026-11-23 UTC
+
+**USER-EXECUTED PASS (pre-reboot).** On `ubuntu-awx-01`, independently verified ext4 UUID `532571bf-d66d-4b59-8d99-2bdaca4e3253` on `/dev/sdb1`. Backed up `/etc/fstab` to `/etc/fstab.awx-20261123-012924.bak`. Added UUID-based ext4 entry for `/var/lib/awx-postgresql`; `findmnt --verify --verbose` reported **0 parse errors, 0 errors, 2 warnings** (pre-existing `/swap.img` file source, systemd reload pending); `systemctl daemon-reload` then executed. `mount` succeeded. `findmnt` confirms `/var/lib/awx-postgresql` mounted from `/dev/sdb1` ext4 with expected UUID and `rw,relatime`; `df -hT`: 40G total, 24K used, 38G available. **Pending:** independent reboot/persistence verification before K3s or AWX Operator deployment. Existing Hyper-V automatic checkpoint preserved; automatic checkpoints disabled.
