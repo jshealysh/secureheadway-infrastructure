@@ -273,3 +273,7 @@ User observed on ubuntu-awx-01: local-path-provisioner Deployment 1/1 Available,
 ### AWX-006G — PASS: dedicated PostgreSQL disk identity and mount prerequisites
 
 User verified on ubuntu-awx-01: /dev/sdb1 ext4 LABEL AWX-PostgreSQL, filesystem UUID 532571bf-d66d-4b59-8d99-2bdaca4e3253, PARTUUID e7faff63-b0e1-447f-8ae0-fe86eee93ebb. /etc/fstab entry `UUID=532571bf-d66d-4b59-8d99-2bdaca4e3253 /var/lib/awx-postgresql ext4 defaults 0 2`; active mount rw ext4 /dev/sdb1; directory root:root mode 0755. Only StorageClass local-path (default, rancher.io/local-path, Delete, WaitForFirstConsumer), no PVs/PVCs. All read-only checks PASS; no changes. Planned: isolated PostgreSQL storage with non-default StorageClass, Retain policy, disk mount preflight, while leaving K3s-managed default unchanged. Need to verify operator PostgreSQL deployment configuration and choose implementation before applying.
+
+### AWX-006H — PASS: dedicated PostgreSQL storage safety
+
+User executed on ubuntu-awx-01: expected filesystem UUID 532571bf-d66d-4b59-8d99-2bdaca4e3253 exactly matched active findmnt UUID for /var/lib/awx-postgresql; mount /dev/sdb1 ext4 rw,relatime. OS /dev/sda2 ext4 mounted /; distinct source confirmed. OS 78G total 66G free; dedicated PostgreSQL 40G total 38G free. All verification PASS; no changes. Next: determine supported AWX Operator database storage class/PVC configuration and implement isolated PostgreSQL storage using dedicated filesystem, preserving K3s default local-path.
