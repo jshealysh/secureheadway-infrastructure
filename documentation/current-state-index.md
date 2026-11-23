@@ -173,3 +173,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-002J seed ISO filename diagnosis — 2026-11-22
 
 **PASS (diagnostic):** User executed `isoinfo -f`, `isoinfo -R -f`, and extension checks against AWX seed ISO. Both listings show `/META_DAT.;1` and `/USER_DAT.;1`; `isoinfo -d` reports `NO Joliet present`, `NO Rock Ridge present`, volume `cidata`. Current AWX ISO is **NOT ACCEPTED** for NoCloud autoinstall. Next: explicitly authorized repair only of `seed-ubuntu-awx-01.iso`, add Rock Ridge and Joliet and verify exact names. Preserve all existing PKI/Kubernetes seed files and original Ubuntu autoinstall ISO.
+
+### AWX-002K corrected NoCloud seed ISO — 2026-11-22
+
+**USER-EXECUTED PASS.** Original AWX-only seed ISO preserved as `seed-ubuntu-awx-01.iso.bak`. Corrected `seed-ubuntu-awx-01.iso` generated with `genisoimage -R -J -V cidata`; `isoinfo -R -f` returned exact `/meta-data` and `/user-data`; `isoinfo -d` confirmed `Volume id: cidata`, Joliet UCS level 3, Rock Ridge version 1. ISO size 374784 bytes. Source files and other seed media unchanged. This verifies ISO structure only; Ubuntu autoinstall not yet tested. Next: create persistent AWX Hyper-V VM with 80 GB OS disk only during installation; PostgreSQL disk to attach later because seed storage match selects smallest disk.
