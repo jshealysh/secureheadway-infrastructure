@@ -249,3 +249,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-006B K3s source audit — partial PASS, version retrieval FAIL
 
 User execution: HTTPS to get.k3s.io and GitHub k3s releases returned HTTP 200. Stable channel request https://update.k3s.io/v1-release/channels/stable followed redirects to GitHub release HTML, not a machine-readable version string; prior script incorrectly printed PASS despite invalid version. No K3s installed. Next AWX-006B.1: inspect redirect effective URL, extract and validate release tag; do not install yet.
+
+### AWX-006B.1 — PASS: K3s stable release verification
+
+Verified on ubuntu-awx-01: channel https://update.k3s.io/v1-release/channels/stable returned HTTP 200, effective URL https://github.com/k3s-io/k3s/releases/tag/v1.37.2+k3s1. Extracted release tag v1.37.2+k3s1 passed strict validation. No K3s installation performed. Next: review pinned K3s single-node installation configuration before execution.
