@@ -241,3 +241,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-005D.2 K3s prerequisite reboot verification — 2026-11-23
 
 **USER-EXECUTED PASS.** After reboot, `ubuntu-awx-01` hostname verified; no active swap; `overlay` and `br_netfilter` loaded; `net.ipv4.ip_forward=1` and `net.bridge.bridge-nf-call-iptables=1`; PostgreSQL ext4 filesystem mounted persistently at `/var/lib/awx-postgresql` with expected UUID `532571bf-d66d-4b59-8d99-2bdaca4e3253`. `df -hT`: root `/dev/sda2` 78G total/67G available; PostgreSQL `/dev/sdb1` 40G total/38G available. **AWX-005 host prerequisite milestone PASS.** Next AWX-006A: read-only port and container runtime audit before K3s installation; do not touch protected Kubernetes cluster.
+
+### AWX-006A K3s pre-installation network/runtime audit — 2026-11-23
+
+**USER-EXECUTED PASS (read-only).** `ubuntu-awx-01` eth0 UP at `172.16.0.17/24`. `ss -tulnp` showed only SSH TCP 22, local systemd-resolved DNS TCP/UDP 53, SSH forwarding loopback 6010; no listeners on checked ports 6443, 10250, 2379, 2380, 8472, 51820, 51821, 80, 443. No docker, containerd, crio, ctr, nerdctl, k3s, kubectl, or helm executable. k3s/kubelet/containerd/docker services inactive. UFW inactive (no host firewall changes requested). `getent ahostsv4` resolved `github.com` and `get.k3s.io` successfully (DNS only; HTTPS reachability not yet verified). Next AWX-006B: read-only inspect version-pinned K3s release availability and installer HTTPS before installation; protected reference cluster must remain untouched.
