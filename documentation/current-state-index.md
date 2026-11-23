@@ -189,3 +189,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-003C first boot and remote login — 2026-11-22
 
 **USER-REPORTED SUCCESS:** Ubuntu installed on `ubuntu-awx-01`; user is logged in remotely from development workstation `172.16.0.14`. This supports first-boot/install and SSH access success but does not independently verify the guest's IP, OS release, disk layout, or services. Next AWX-003D read-only checks on guest for hostname, OS, IPv4/routes/DNS, disk/mounts, SSH service and uptime. PostgreSQL disk not yet attached; no K3s/AWX installation yet.
+
+### AWX-003D Ubuntu installation verification — 2026-11-22
+
+**USER-EXECUTED PASS.** Guest `ubuntu-awx-01` reports Ubuntu 24.04.5 LTS, Linux `6.8.0-151-generic`, Microsoft Hyper-V Gen2 UEFI. `eth0` UP at `172.16.0.17/24`; static default route via `172.16.0.1`; DNS `1.1.1.1`, `8.8.8.8`. Storage: `sda` 80G, `sda1` 1G VFAT `/boot/efi`, `sda2` 78.9G ext4 `/`; `df -h /`: 78G filesystem, 6.8G used, 67G available, 10% usage. `sr0` installer ISO and `sr1` 366K seed ISO remain attached. SSH service `active`, user `deploy`; remote login from workstation `172.16.0.14` confirmed. No 40GB PostgreSQL data disk attached yet. Next: host-side check and create/attach dedicated 40GB VHDX; do not initialize or format guest storage until disk identity is independently verified.
