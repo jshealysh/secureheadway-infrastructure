@@ -245,3 +245,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-006A K3s pre-installation network/runtime audit — 2026-11-23
 
 **USER-EXECUTED PASS (read-only).** `ubuntu-awx-01` eth0 UP at `172.16.0.17/24`. `ss -tulnp` showed only SSH TCP 22, local systemd-resolved DNS TCP/UDP 53, SSH forwarding loopback 6010; no listeners on checked ports 6443, 10250, 2379, 2380, 8472, 51820, 51821, 80, 443. No docker, containerd, crio, ctr, nerdctl, k3s, kubectl, or helm executable. k3s/kubelet/containerd/docker services inactive. UFW inactive (no host firewall changes requested). `getent ahostsv4` resolved `github.com` and `get.k3s.io` successfully (DNS only; HTTPS reachability not yet verified). Next AWX-006B: read-only inspect version-pinned K3s release availability and installer HTTPS before installation; protected reference cluster must remain untouched.
+
+### AWX-006B K3s source audit — partial PASS, version retrieval FAIL
+
+User execution: HTTPS to get.k3s.io and GitHub k3s releases returned HTTP 200. Stable channel request https://update.k3s.io/v1-release/channels/stable followed redirects to GitHub release HTML, not a machine-readable version string; prior script incorrectly printed PASS despite invalid version. No K3s installed. Next AWX-006B.1: inspect redirect effective URL, extract and validate release tag; do not install yet.
