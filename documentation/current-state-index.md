@@ -139,3 +139,7 @@ User confirmed Netgear RAX50v2 DHCP server at `172.16.0.1` was changed and saved
 ### AWX-002 CPU and memory approval — 2026-11-22
 
 **USER-APPROVED DESIGN / NOT DEPLOYED:** `ubuntu-awx-01` allocated 4 vCPUs and 12 GiB static RAM, plus approved 80 GB OS/K3s/AWX and 40 GB PostgreSQL disks. Planned Gen 2 Ubuntu Server 24.04 LTS, `Public Virtual Switch`, `172.16.0.17/24`, static MAC `00-15-5D-28-40-14`. Next action is read-only Hyper-V preflight for resources, VM identity, switch, MAC and disk paths before VM creation. **AWX-002 remains PENDING** until provisioning and checks are completed.
+
+### AWX-002B Hyper-V resource/storage preflight — 2026-11-22
+
+**USER-EXECUTED READ-ONLY VERIFICATION: PASS for present resource availability, VM creation still PENDING.** Host `SHEALYLLM` free RAM **87.61 GiB**; `Public Virtual Switch` is **External**; Hyper-V default VM path `C:\\ProgramData\\Microsoft\\Windows\\Hyper-V`, default VHDX path `C:\\ProgramData\\Microsoft\\Windows\\Virtual Hard Disks`; available disk space: `C:` **1650.26 GiB**, `E:` (Data) **3547.31 GiB**, `D:` Ubuntu ISO volume 0 GiB, `F:` cidata 0 GiB. AWX-002A earlier found VM name available and no static MAC collision. Proposed, **not yet user-approved**, AWX disk placement: `E:\\VM Disks\\Ubuntu-AWX-01\\` with separate 80 GB OS and 40 GB PostgreSQL VHDX files. Confirm placement and existing directory/file collisions before creation. Host memory is a point-in-time observation; concurrent-cluster capacity requires later validation.
