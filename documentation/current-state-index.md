@@ -529,3 +529,7 @@ User confirmed the 'Groups' tab for 'Secure Headway Infrastructure' inventory co
 ### AWX-010G — PASS (user-confirmed): First inventory group created
 
 User confirmed that group 'ubuntu_servers' appears in the 'Secure Headway Infrastructure' inventory after the AWX-010G creation step. Intended group description: 'Ubuntu servers explicitly authorized for Secure Headway infrastructure automation'; exact saved description and group variables not independently inspected. No hosts or child groups were requested to be added. Next step: inspect group details to confirm description, variables, and host count before expanding inventory hierarchy.
+
+### AWX-010H — PASS (user-confirmed): ubuntu_servers group empty and non-targeting
+
+User confirmed in AWX UI that group 'ubuntu_servers' exists in 'Secure Headway Infrastructure', has zero hosts, zero related/child groups, and empty Variables ('---'). Exact saved description has not been independently verified. No hosts were added, and no automation targets have been authorized. Next step: inspect existing AWX Projects before configuring GitHub SCM integration, preserving demo resources and avoiding duplicates.
