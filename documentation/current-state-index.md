@@ -135,3 +135,7 @@ User confirmed Netgear RAX50v2 DHCP server at `172.16.0.1` was changed and saved
 ### NET-003 MetalLB VIP verification — 2026-11-22
 
 **Executed by user on Hyper-V host `172.16.0.11`; status PARTIAL PASS (read-only).** `172.16.0.200` neighbor table entry: `00-15-5D-28-40-12`, `Reachable`, interface `vEthernet (Public Virtual Switch)`. This matches the recorded reference `k8s-worker-02` MAC and supports active Layer 2 VIP advertisement. `172.16.0.201` neighbor entry: `00-00-00-00-00-00`, `Unreachable`, same interface; no active neighbor resolved at test time, consistent with target cluster not yet deployed. No ICMP response objects were displayed for either VIP. **Not verified:** application/Gateway health on .200, conclusive freedom from IP conflict on .201, actual MetalLB configuration. No changes made. Next: targeted verification of reference Gateway/service and target address availability as needed; AWX-002 remains PENDING.
+
+### AWX-002 CPU and memory approval — 2026-11-22
+
+**USER-APPROVED DESIGN / NOT DEPLOYED:** `ubuntu-awx-01` allocated 4 vCPUs and 12 GiB static RAM, plus approved 80 GB OS/K3s/AWX and 40 GB PostgreSQL disks. Planned Gen 2 Ubuntu Server 24.04 LTS, `Public Virtual Switch`, `172.16.0.17/24`, static MAC `00-15-5D-28-40-14`. Next action is read-only Hyper-V preflight for resources, VM identity, switch, MAC and disk paths before VM creation. **AWX-002 remains PENDING** until provisioning and checks are completed.
