@@ -285,3 +285,7 @@ User verified on ubuntu-awx-01: node Ready control-plane v1.37.2+k3s1 at 172.16.
 ### AWX-006J — PASS: local PostgreSQL volume path inspection
 
 User observed on ubuntu-awx-01: dedicated /var/lib/awx-postgresql mount UUID preflight passed, ext4 rw /dev/sdb1, directory contains only standard ext4 lost+found, no PostgreSQL processes detected, Kubernetes node ubuntu-awx-01, only default local-path StorageClass and no PVs or PVCs. Read-only PASS; no changes. Next: plan static local PV against a dedicated subdirectory rather than filesystem root, and verify supported AWX Operator managed PostgreSQL storageClassName/PVC settings before creation.
+
+### AWX-006K — PASS: PostgreSQL data directory prepared
+
+User executed on ubuntu-awx-01: hostname and dedicated ext4 mount UUID 532571bf-d66d-4b59-8d99-2bdaca4e3253 verified, confirmed /var/lib/awx-postgresql/data absent, created directory using install -d mode 0755 owner root:root, verified directory resides on dedicated /dev/sdb1 filesystem, verified empty. Disk 40G total / 38G available / 28K used. No PostgreSQL or Kubernetes PV/PVC installed. Next: verify AWX Operator PostgreSQL storageClassName/claim capabilities and compatibility before applying static local PV.
