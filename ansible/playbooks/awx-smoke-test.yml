@@ -1,0 +1,28 @@
+---
+- name: Secure Headway AWX Smoke Test
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Begin verification
+      ansible.builtin.debug:
+        msg: '=== BEGIN AWX Smoke Test ==='
+
+    - name: Verify Ansible version
+      ansible.builtin.debug:
+        msg: 'Ansible version: {{ ansible_version.full }}'
+
+    - name: Verify Python availability
+      ansible.builtin.command:
+        cmd: python3 --version
+      register: python_version
+      changed_when: false
+
+    - name: Display Python version
+      ansible.builtin.debug:
+        msg: '{{ python_version.stdout }}'
+
+    - name: Complete verification
+      ansible.builtin.debug:
+        msg: '=== END AWX Smoke Test: PASS ==='
