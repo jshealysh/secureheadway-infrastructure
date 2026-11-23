@@ -521,3 +521,7 @@ User screenshot of AWX Resources > Inventories shows exactly one inventory: 'Dem
 ### AWX-010E — PASS: Secure Headway Infrastructure inventory created
 
 AWX inventory Details screenshot verifies Name='Secure Headway Infrastructure', Organization='Secure Headway', Type='Inventory', Description='Managed infrastructure for Secure Headway automated provisioning and verification', Total hosts=0, Variables YAML empty ('---'), created and last modified 2026-11-23 18:24:31 (AWX UI local time) by admin. Dedicated inventory created without altering Default organization's Demo Inventory. Next step: inspect Groups tab and establish non-destructive group hierarchy, keeping AWX controller and existing disposable test Kubernetes nodes out of automated targeting until explicitly authorized.
+
+### AWX-010F — PASS: Inventory groups initial state verified
+
+User confirmed the 'Groups' tab for 'Secure Headway Infrastructure' inventory contains no groups. This is a user-reported observation (no screenshot attached for this step). No groups or hosts have been added yet. Next AWX-010G: create first empty group ubuntu_servers; do not add or target any hosts, including AWX controller or existing disposable Kubernetes test nodes.
