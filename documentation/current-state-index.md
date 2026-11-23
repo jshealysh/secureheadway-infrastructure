@@ -165,3 +165,7 @@ User confirmed Netgear RAX50v2 DHCP server at `172.16.0.1` was changed and saved
 ### AWX-002H.1 / AWX-002H.2 WSL and ISO tooling — 2026-11-22
 
 User-executed read-only checks: **PASS**. WSL `Ubuntu` Running, version 2; `wsl.exe -d Ubuntu -- /bin/bash -c 'echo WSL_COMMAND_SUCCESS'` returned expected text and exit code 0. Direct `which` checks found `/usr/bin/genisoimage`, `/usr/bin/xorriso`, `/usr/bin/mkisofs`, `/usr/bin/cloud-localds`. Original AWX-002H nested-shell output was inconclusive; resolved by simpler command invocation. Next AWX-002I: generate unique `cidata` ISO from existing AWX source, verify ISO label and root file names; no VM created yet.
+
+### AWX-002I seed ISO generation — 2026-11-22
+
+User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubuntu-awx-01.iso` created (360448 bytes); `isoinfo -d` reported volume id `cidata`. Default `isoinfo -f` displayed ISO9660 names `/META_DAT.;1` and `/USER_DAT.;1`, causing the script's exact-name test to FAIL. This listing alone does not establish whether Rock Ridge names are present; next read-only step is to inspect `isoinfo -R -f` and `isoinfo -d` extension info before deciding whether ISO needs regeneration. No VM created.
