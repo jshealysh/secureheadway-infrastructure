@@ -485,3 +485,7 @@ On ubuntu-awx-01, PostgreSQL Pod awx-postgres-15-0 Ready; local psql connected t
 ### AWX-009D — PARTIAL PASS: PostgreSQL fingerprint not captured; stdin forwarding correction required
 
 Target ubuntu-awx-01 verified. PostgreSQL PVC postgres-15-awx-postgres-15-0 remained Bound to awx-postgresql-pv 30Gi RWO; /dev/sdb1 ext4 mounted rw at /var/lib/awx-postgresql. Fingerprint section printed no results because kubectl exec invocation omitted -i while passing psql SQL via heredoc; without stdin forwarding, psql received no statements and returned successfully. No database baseline captured, no controlled restart authorized. Correct with kubectl exec -i and repeat AWX-009D; verify expected fields are present before any restart. No secrets captured.
+
+### AWX-009D.1 — PASS: Validated pre-restart PostgreSQL fingerprint
+
+On ubuntu-awx-01, corrected kubectl exec -i successfully forwarded read-only SQL to PostgreSQL. Captured and individually validated all 10 fingerprint fields: database=awx; postgres_version=15.19; system_identifier=7711184318677762075; table_count=170; users=1; organizations=1; inventories=1; projects=1; jobs=0; migrations=294. All 10 field-presence checks PASS. PVC postgres-15-awx-postgres-15-0 Bound to awx-postgresql-pv 30Gi RWO. Dedicated /dev/sdb1 ext4 mounted rw at /var/lib/awx-postgresql. No secrets or individual account details recorded. Baseline established for controlled restart comparison; reboot not yet executed at this checkpoint.
