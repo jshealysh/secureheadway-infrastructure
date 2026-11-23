@@ -533,3 +533,7 @@ User confirmed that group 'ubuntu_servers' appears in the 'Secure Headway Infras
 ### AWX-010H — PASS (user-confirmed): ubuntu_servers group empty and non-targeting
 
 User confirmed in AWX UI that group 'ubuntu_servers' exists in 'Secure Headway Infrastructure', has zero hosts, zero related/child groups, and empty Variables ('---'). Exact saved description has not been independently verified. No hosts were added, and no automation targets have been authorized. Next step: inspect existing AWX Projects before configuring GitHub SCM integration, preserving demo resources and avoiding duplicates.
+
+### AWX-010I — PASS: Existing AWX projects inspected
+
+User screenshot shows one project, Demo Project, status Successful, type Git, revision 347e44f. Organization not displayed in list. Preserve existing project unchanged. Next AWX-010J: create dedicated Secure Headway project using public HTTPS Git repository https://github.com/jshealysh/secureheadway-infrastructure.git, branch main, without SCM credentials. Verify synchronization separately. No hosts or jobs targeted.
