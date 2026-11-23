@@ -237,3 +237,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-005C K3s kernel prerequisites — 2026-11-23
 
 **USER-EXECUTED PASS (pre-reboot).** On `ubuntu-awx-01`, `modprobe overlay` and `modprobe br_netfilter` succeeded, verified loaded via `lsmod` and `/sys/module`. Created `/etc/modules-load.d/99-awx-k3s.conf` with `overlay` and `br_netfilter`. Created `/etc/sysctl.d/99-awx-k3s.conf` with `net.ipv4.ip_forward = 1` and `net.bridge.bridge-nf-call-iptables = 1`. `sysctl -p` applied both, and readback verified both equal 1. No preexisting files at these paths. **Pending:** reboot verification of persistent swap-off, modules, sysctls, and PostgreSQL UUID mount before K3s installation.
+
+### AWX-005D.2 K3s prerequisite reboot verification — 2026-11-23
+
+**USER-EXECUTED PASS.** After reboot, `ubuntu-awx-01` hostname verified; no active swap; `overlay` and `br_netfilter` loaded; `net.ipv4.ip_forward=1` and `net.bridge.bridge-nf-call-iptables=1`; PostgreSQL ext4 filesystem mounted persistently at `/var/lib/awx-postgresql` with expected UUID `532571bf-d66d-4b59-8d99-2bdaca4e3253`. `df -hT`: root `/dev/sda2` 78G total/67G available; PostgreSQL `/dev/sdb1` 40G total/38G available. **AWX-005 host prerequisite milestone PASS.** Next AWX-006A: read-only port and container runtime audit before K3s installation; do not touch protected Kubernetes cluster.
