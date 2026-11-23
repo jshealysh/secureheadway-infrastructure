@@ -177,3 +177,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-002K corrected NoCloud seed ISO — 2026-11-22
 
 **USER-EXECUTED PASS.** Original AWX-only seed ISO preserved as `seed-ubuntu-awx-01.iso.bak`. Corrected `seed-ubuntu-awx-01.iso` generated with `genisoimage -R -J -V cidata`; `isoinfo -R -f` returned exact `/meta-data` and `/user-data`; `isoinfo -d` confirmed `Volume id: cidata`, Joliet UCS level 3, Rock Ridge version 1. ISO size 374784 bytes. Source files and other seed media unchanged. This verifies ISO structure only; Ubuntu autoinstall not yet tested. Next: create persistent AWX Hyper-V VM with 80 GB OS disk only during installation; PostgreSQL disk to attach later because seed storage match selects smallest disk.
+
+### AWX-003A Hyper-V VM creation — 2026-11-22
+
+**USER-EXECUTED PASS.** Hyper-V host created `ubuntu-awx-01` (Gen 2), 4 vCPUs, static 12884901888-byte/12-GiB memory, connected to `Public Virtual Switch`, static MAC `00155D284014`. Exactly one OS VHDX attached: `E:\\VM Disks\\Ubuntu-AWX-01\\Ubuntu-AWX-01-OS.vhdx` (creation requested 80 GB). DVD drives attached to existing `secureheadway-ubuntu-24.04.5-autoinstall.iso` and corrected `Seed\\seed-ubuntu-awx-01.iso`. Output confirms VM State Off, single OS disk, and PASS markers. PostgreSQL disk NOT attached. Next: read-only firmware, boot order, VM generation, DVD, VHDX capacity and VM settings preboot check; do not start before review.
