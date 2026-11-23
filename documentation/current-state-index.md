@@ -229,3 +229,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-005A K3s host prerequisite audit — 2026-11-23
 
 **USER-EXECUTED AUDIT COMPLETE.** `ubuntu-awx-01` Ubuntu 24.04.5 LTS, kernel 6.8.0-151-generic, Hyper-V Gen2, x86-64, 4 vCPUs, 11GiB usable memory; OS root 67GiB free; PostgreSQL mount 38GiB free; eth0 172.16.0.17/24 UP, default route 172.16.0.1, DNS 1.1.1.1/8.8.8.8 configured. `/swap.img` 4GiB enabled (0 used); `overlay` and `br_netfilter` absent from loaded modules; `net.ipv4.ip_forward=0`; no `k3s`, `kubectl`, or `helm` executable; k3s service inactive. **Pending prerequisites:** disable swap persistently, load overlay and br_netfilter and configure persistence, enable IPv4 forwarding (and required bridge netfilter settings), then re-audit before K3s installation. No changes made by AWX-005A.
+
+### AWX-005B disable swap for K3s — 2026-11-23
+
+**USER-EXECUTED PASS.** `ubuntu-awx-01`: original active `/swap.img` 4G (0 used), active `/etc/fstab` swap entry line 12 confirmed. Backup created `/etc/fstab.awx-swap-20261123-013146.bak`. Executed `swapoff -a`, commented `/swap.img` fstab entry, ran `systemctl daemon-reload`; verified no active swap and no active swap fstab entry. Original swap file preserved. Persistence after reboot not yet separately checked. Next AWX-005C: configure `overlay`, `br_netfilter`, and forwarding sysctls with backup and verification.
