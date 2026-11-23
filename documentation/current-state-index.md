@@ -281,3 +281,7 @@ User executed on ubuntu-awx-01: expected filesystem UUID 532571bf-d66d-4b59-8d99
 ### AWX-006I — PASS: static PostgreSQL PV prerequisites
 
 User verified on ubuntu-awx-01: node Ready control-plane v1.37.2+k3s1 at 172.16.0.17, spec.unschedulable empty (no unschedulable flag), dedicated PostgreSQL mount UUID 532571bf-d66d-4b59-8d99-2bdaca4e3253 matches, proposed StorageClass awx-postgresql absent, proposed PV awx-postgresql-pv absent, no PVCs, K3s default local-path unchanged. All checks PASS. Proposed architecture: static local PV with non-default StorageClass kubernetes.io/no-provisioner, WaitForFirstConsumer, Retain, node affinity ubuntu-awx-01; explicitly bind AWX PostgreSQL claim. Before creation, verify supported AWX Operator PostgreSQL PVC/storage class options and local mount-path safety. No changes yet.
+
+### AWX-006J — PASS: local PostgreSQL volume path inspection
+
+User observed on ubuntu-awx-01: dedicated /var/lib/awx-postgresql mount UUID preflight passed, ext4 rw /dev/sdb1, directory contains only standard ext4 lost+found, no PostgreSQL processes detected, Kubernetes node ubuntu-awx-01, only default local-path StorageClass and no PVs or PVCs. Read-only PASS; no changes. Next: plan static local PV against a dedicated subdirectory rather than filesystem root, and verify supported AWX Operator managed PostgreSQL storageClassName/PVC settings before creation.
