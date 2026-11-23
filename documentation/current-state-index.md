@@ -225,3 +225,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-004E.4B post-reboot PostgreSQL storage verification — 2026-11-23
 
 **USER-EXECUTED PASS, storage milestone complete.** After reboot, guest `ubuntu-awx-01` reports OS `/dev/sda` 80G, `sda1` VFAT at `/boot/efi`, `sda2` ext4 at `/`; dedicated `/dev/sdb` 40G with `sdb1` ext4 automatically mounted at `/var/lib/awx-postgresql`. `findmnt` confirms UUID `532571bf-d66d-4b59-8d99-2bdaca4e3253`, ext4, `rw,relatime`; `df -hT` reports 40G size, 24K used, 38G available. All post-reboot checks passed. Next: read-only K3s host prerequisite audit before making installation changes; AWX PostgreSQL PV integration not yet configured.
+
+### AWX-005A K3s host prerequisite audit — 2026-11-23
+
+**USER-EXECUTED AUDIT COMPLETE.** `ubuntu-awx-01` Ubuntu 24.04.5 LTS, kernel 6.8.0-151-generic, Hyper-V Gen2, x86-64, 4 vCPUs, 11GiB usable memory; OS root 67GiB free; PostgreSQL mount 38GiB free; eth0 172.16.0.17/24 UP, default route 172.16.0.1, DNS 1.1.1.1/8.8.8.8 configured. `/swap.img` 4GiB enabled (0 used); `overlay` and `br_netfilter` absent from loaded modules; `net.ipv4.ip_forward=0`; no `k3s`, `kubectl`, or `helm` executable; k3s service inactive. **Pending prerequisites:** disable swap persistently, load overlay and br_netfilter and configure persistence, enable IPv4 forwarding (and required bridge netfilter settings), then re-audit before K3s installation. No changes made by AWX-005A.
