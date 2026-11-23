@@ -441,3 +441,7 @@ Windows workstation 172.16.0.14: OpenSSH client located at C:\\WINDOWS\\System32
 ### AWX-008I.1A — PASS: SSH host identity fingerprint matched
 
 User ran ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub -E sha256 on ubuntu-awx-01 and reported ED25519 SHA256:llc/QNclZ6QYc/uZ/OMFCNqRINhGNPiM4dBAEdWYfu4. This exactly matches the Windows first-connect SSH host-key prompt from AWX-008I.1. Host identity verified assuming the command ran in trusted existing session or Hyper-V console. No host key changes required. AWX-008I.1B Windows key/agent inventory remains pending; tunnel not yet established.
+
+### AWX-008I.1B — PASS: Windows SSH key inventory; agent unavailable
+
+Windows PowerShell output lists private-key filenames C:\\Users\\johns\\.ssh\\id_ed25519_k8s and C:\\Users\\johns\\.ssh\\secureheadway_staging. ssh-add -l reports Error connecting to agent: No such file or directory. SSH agent service listing contained name ssh-agent but its status/start type were not clearly visible in pasted table; do not infer start type. Direct ssh -i key selection is available without agent. No key contents or secret material published. Next AWX-008I.2 test public-key authentication against deploy@172.16.0.17 using explicit key files, BatchMode, IdentitiesOnly, no remote commands other than harmless hostname, and no port forwarding yet. AWX tunnel still pending.
