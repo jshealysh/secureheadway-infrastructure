@@ -293,3 +293,7 @@ User executed on ubuntu-awx-01: hostname and dedicated ext4 mount UUID 532571bf-
 ### AWX-006L — PASS: GitHub published release discovery (compatibility NOT established)
 
 User ran on ubuntu-awx-01: GitHub API releases/latest HTTP 200; returned ansible/awx-operator tag 2.19.1, release URL https://github.com/ansible/awx-operator/releases/tag/2.19.1, published 2024-07-02T21:53:58Z, draft=false, prerelease=false. K3s node version v1.37.2+k3s1. Discovery PASS only. This does NOT confirm newest tag overall, AWX Operator compatibility with Kubernetes 1.37, or PostgreSQL storage configuration support. No installation/configuration changes. Next AWX-006M: read-only inspect repository tags and versioned AWX Operator PostgreSQL storage documentation before choosing version.
+
+### AWX-006M — PARTIAL PASS: tags and deployment inventory; storage documentation unresolved
+
+User on ubuntu-awx-01 retrieved first 30 ansible/awx-operator repository tags via GitHub API, headed by 2.19.1, 2.19.0, 2.18.0, through 2.1.0. Attempted raw URL for tag 2.19.1 docs/user-guide/advanced-configuration/persisting-data.md returned HTTP 404, so PostgreSQL storage fields and compatibility remain unverified. K3s deployments kube-system coredns, local-path-provisioner, metrics-server all 1/1, no AWX CRDs shown. No changes. Status PARTIAL PASS; next AWX-006N inspect repository tree and versioned CRD/roles directly before choosing PostgreSQL storage configuration.
