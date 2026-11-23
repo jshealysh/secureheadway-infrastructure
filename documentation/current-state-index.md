@@ -233,3 +233,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-005B disable swap for K3s — 2026-11-23
 
 **USER-EXECUTED PASS.** `ubuntu-awx-01`: original active `/swap.img` 4G (0 used), active `/etc/fstab` swap entry line 12 confirmed. Backup created `/etc/fstab.awx-swap-20261123-013146.bak`. Executed `swapoff -a`, commented `/swap.img` fstab entry, ran `systemctl daemon-reload`; verified no active swap and no active swap fstab entry. Original swap file preserved. Persistence after reboot not yet separately checked. Next AWX-005C: configure `overlay`, `br_netfilter`, and forwarding sysctls with backup and verification.
+
+### AWX-005C K3s kernel prerequisites — 2026-11-23
+
+**USER-EXECUTED PASS (pre-reboot).** On `ubuntu-awx-01`, `modprobe overlay` and `modprobe br_netfilter` succeeded, verified loaded via `lsmod` and `/sys/module`. Created `/etc/modules-load.d/99-awx-k3s.conf` with `overlay` and `br_netfilter`. Created `/etc/sysctl.d/99-awx-k3s.conf` with `net.ipv4.ip_forward = 1` and `net.bridge.bridge-nf-call-iptables = 1`. `sysctl -p` applied both, and readback verified both equal 1. No preexisting files at these paths. **Pending:** reboot verification of persistent swap-off, modules, sysctls, and PostgreSQL UUID mount before K3s installation.
