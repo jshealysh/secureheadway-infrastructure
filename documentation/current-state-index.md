@@ -193,3 +193,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-003D Ubuntu installation verification — 2026-11-22
 
 **USER-EXECUTED PASS.** Guest `ubuntu-awx-01` reports Ubuntu 24.04.5 LTS, Linux `6.8.0-151-generic`, Microsoft Hyper-V Gen2 UEFI. `eth0` UP at `172.16.0.17/24`; static default route via `172.16.0.1`; DNS `1.1.1.1`, `8.8.8.8`. Storage: `sda` 80G, `sda1` 1G VFAT `/boot/efi`, `sda2` 78.9G ext4 `/`; `df -h /`: 78G filesystem, 6.8G used, 67G available, 10% usage. `sr0` installer ISO and `sr1` 366K seed ISO remain attached. SSH service `active`, user `deploy`; remote login from workstation `172.16.0.14` confirmed. No 40GB PostgreSQL data disk attached yet. Next: host-side check and create/attach dedicated 40GB VHDX; do not initialize or format guest storage until disk identity is independently verified.
+
+### AWX-004A.2 PostgreSQL VHDX creation and attachment — 2026-11-22
+
+**USER-EXECUTED PASS:** 40GB dynamic VHDX created at `E:\\VM Disks\\Ubuntu-AWX-01\\Ubuntu-AWX-01-PostgreSQL.vhdx`, attached to `ubuntu-awx-01` on SCSI controller 0 location 3. Two disks attached, VM remains Off. Hyper-V reported OS disk at SCSI 0 location 0 with unexpected GUID-suffixed name `Ubuntu-AWX-01-OS_35416DE3-4E80-45C2-9455-C92389B...` (truncated in output). **Investigate whether OS VHDX is checkpoint/differencing chain before boot or any disk operations.** AWX-004B read-only inspection of Get-VHD ParentPath/VhdType and Get-VMSnapshot requested. No PostgreSQL guest partitioning/formatting yet.
