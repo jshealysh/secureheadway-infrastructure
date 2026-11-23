@@ -525,3 +525,7 @@ AWX inventory Details screenshot verifies Name='Secure Headway Infrastructure', 
 ### AWX-010F — PASS: Inventory groups initial state verified
 
 User confirmed the 'Groups' tab for 'Secure Headway Infrastructure' inventory contains no groups. This is a user-reported observation (no screenshot attached for this step). No groups or hosts have been added yet. Next AWX-010G: create first empty group ubuntu_servers; do not add or target any hosts, including AWX controller or existing disposable Kubernetes test nodes.
+
+### AWX-010G — PASS (user-confirmed): First inventory group created
+
+User confirmed that group 'ubuntu_servers' appears in the 'Secure Headway Infrastructure' inventory after the AWX-010G creation step. Intended group description: 'Ubuntu servers explicitly authorized for Secure Headway infrastructure automation'; exact saved description and group variables not independently inspected. No hosts or child groups were requested to be added. Next step: inspect group details to confirm description, variables, and host count before expanding inventory hierarchy.
