@@ -213,3 +213,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-004E.1 PostgreSQL data disk partition — 2026-11-22
 
 **USER-EXECUTED PASS.** On `ubuntu-awx-01`, validated `/dev/sdb` is empty 40 GiB disk; `sgdisk --clear --new=1:0:0 --typecode=1:8300 --change-name=1:AWX-PostgreSQL /dev/sdb` completed successfully. `lsblk` now shows `sdb` 40G disk and `sdb1` 40G partition with no filesystem or mountpoint. OS disk `sda` not targeted. Next AWX-004E.2: gated ext4 formatting of `/dev/sdb1` only; mount by UUID separately after verification.
+
+### AWX-004E.2 ext4 formatting — 2026-11-22
+
+**USER-EXECUTED PASS.** `ubuntu-awx-01`: preformat guards verified empty `/dev/sdb1` on 40GiB `/dev/sdb`. `mkfs.ext4 -L AWX-PostgreSQL /dev/sdb1` completed, with UUID `532571bf-d66d-4b59-8d99-2bdaca4e3253`; postcheck `blkid` returned ext4 type and UUID. `lsblk -f` display omitted FSTYPE/UUID columns in supplied output despite `blkid` PASS; independently verify before mounting. Filesystem not yet mounted; next AWX-004E.3 guarded UUID-based `/var/lib/awx-postgresql` mount and `/etc/fstab` entry, with backup and validation.
