@@ -185,3 +185,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-003B / AWX-003B.1 final preboot verification — 2026-11-22
 
 **USER-EXECUTED PASS after correction to verification logic.** AWX-003B verified Gen2, 4 vCPUs, 12 GiB static memory, exactly one 80 GB OS VHDX, correct Public Virtual Switch and MAC, both ISOs, Secure Boot Off. Its final check failed because script incorrectly expected `BootType = DVD`; Hyper-V reports DVD as `BootType = Drive`. AWX-003B.1 confirmed first boot `Device type: DvdDrive` at SCSI controller 0 location 1 pointing to existing `secureheadway-ubuntu-24.04.5-autoinstall.iso`; seed ISO is second DVD at controller 0 location 2; VM remains Off. **Preboot PASS; no firmware correction required.** Next AWX-003C: user-authorized first boot and unattended Ubuntu install, with only 80 GB OS disk attached. VM install and network verification pending.
+
+### AWX-003C first boot and remote login — 2026-11-22
+
+**USER-REPORTED SUCCESS:** Ubuntu installed on `ubuntu-awx-01`; user is logged in remotely from development workstation `172.16.0.14`. This supports first-boot/install and SSH access success but does not independently verify the guest's IP, OS release, disk layout, or services. Next AWX-003D read-only checks on guest for hostname, OS, IPv4/routes/DNS, disk/mounts, SSH service and uptime. PostgreSQL disk not yet attached; no K3s/AWX installation yet.
