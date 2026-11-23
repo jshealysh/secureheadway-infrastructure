@@ -209,3 +209,7 @@ User-executed result: **PARTIAL PASS / filename validation pending**. `seed-ubun
 ### AWX-004D.2 guest PostgreSQL disk discovery — 2026-11-22
 
 **USER-EXECUTED PASS (read-only).** Guest hostname `ubuntu-awx-01`; `/dev/sda` 80 GiB OS disk with GPT, `/dev/sda1` EFI VFAT and `/dev/sda2` ext4 mounted at `/`. New `/dev/sdb` 40 GiB (42949672960 bytes), no partition table or partitions reported by `fdisk -l`, no filesystem signatures in `blkid`, no mounts. `df -hT` confirms OS root `/dev/sda2` 78G, 6.8G used, 67G available; `sr1` cidata ISO still present. Ready for separately gated, explicitly targeted data-disk partitioning/formatting, UUID-based mount; do not touch `/dev/sda`. AWX-004D.1 host start output not supplied, but guest running evidenced by successful SSH commands.
+
+### AWX-004E.1 PostgreSQL data disk partition — 2026-11-22
+
+**USER-EXECUTED PASS.** On `ubuntu-awx-01`, validated `/dev/sdb` is empty 40 GiB disk; `sgdisk --clear --new=1:0:0 --typecode=1:8300 --change-name=1:AWX-PostgreSQL /dev/sdb` completed successfully. `lsblk` now shows `sdb` 40G disk and `sdb1` 40G partition with no filesystem or mountpoint. OS disk `sda` not targeted. Next AWX-004E.2: gated ext4 formatting of `/dev/sdb1` only; mount by UUID separately after verification.
